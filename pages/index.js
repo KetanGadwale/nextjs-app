@@ -1,22 +1,8 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
-import { useState, useEffect } from 'react';
 
-export default function Home() {
-    const [state, setState] = useState('');
-
-    useEffect(() => {
-        async function getExperts() {
-            const res = await fetch(
-                'https://4736oofnuj34o7fpeskgmlxk5u0ekatp.lambda-url.us-east-1.on.aws/'
-            );
-            const data = res.json();
-            setState(data);
-        }
-        getExperts();
-    });
-
+export default function Home({ data }) {
     return (
         <div className={styles.container}>
             <Head>
@@ -30,7 +16,7 @@ export default function Home() {
 
             <main className={styles.main}>
                 <h1 className={styles.title}>
-                    Hello 2 <a href='https://nextjs.org'>Next.js!</a> {state}
+                    Hello 2 <a href='https://nextjs.org'>Next.js!</a> {data}
                 </h1>
 
                 <p className={styles.description}>
@@ -98,4 +84,16 @@ export default function Home() {
             </footer>
         </div>
     );
+}
+
+export async function getStaticProps() {
+    const res = await fetch(
+        'https://4736oofnuj34o7fpeskgmlxk5u0ekatp.lambda-url.us-east-1.on.aws/'
+    );
+    const data = await res.json();
+    return {
+        props: {
+            data,
+        },
+    };
 }
